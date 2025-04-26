@@ -49,7 +49,7 @@ class _ResultScreenState extends State<ResultScreen> {
     });
 
     try {
-      // Generate slides with text and images
+      // Generate slides with text embedded in images
       final slides = await _geminiService.generateExplanation(
         widget.query,
         widget.theme,
@@ -224,7 +224,7 @@ class _ResultScreenState extends State<ResultScreen> {
           ),
         ),
 
-        // Slideshow
+        // Slideshow - simplified to only show images with embedded text
         Expanded(
           child: PageView.builder(
             controller: _pageController,
@@ -238,78 +238,52 @@ class _ResultScreenState extends State<ResultScreen> {
               final slide = _slides[index];
               return Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  children: [
-                    // Image
-                    Expanded(
-                      flex: 3,
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border:
-                              Border.all(color: Colors.grey[300]!, width: 1.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: slide.imageBase64 != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(14),
-                                child: Image.memory(
-                                  base64Decode(slide.imageBase64!),
-                                  fit: BoxFit.contain,
-                                ),
-                              )
-                            : Center(
-                                child: Icon(
-                                  Icons.image_not_supported_outlined,
-                                  size: 80,
-                                  color: Colors.grey[400],
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: Colors.grey[300]!, width: 1.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: slide.imageBase64 != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(14),
+                          child: Image.memory(
+                            base64Decode(slide.imageBase64!),
+                            fit: BoxFit.contain,
+                          ),
+                        )
+                      : Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.image_not_supported_outlined,
+                                size: 80,
+                                color: Colors.grey[400],
+                              ),
+                              const SizedBox(height: 16),
+                              Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Text(
+                                  'Image generation failed. Please try again.',
+                                  style: GoogleFonts.gloriaHallelujah(
+                                    fontSize: 16,
+                                    color: Colors.grey[600],
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ),
-                      ),
-                    ),
-
-                    // Text
-                    Expanded(
-                      flex: 2,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border:
-                              Border.all(color: Colors.grey[300]!, width: 1.5),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.1),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: SingleChildScrollView(
-                          child: Text(
-                            slide.text,
-                            style: GoogleFonts.gloriaHallelujah(
-                              fontSize: 16,
-                              height: 1.5,
-                              color: Colors.grey[800],
-                            ),
+                            ],
                           ),
                         ),
-                      ),
-                    ),
-                  ],
                 ),
               );
             },

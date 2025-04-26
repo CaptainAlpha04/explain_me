@@ -17,13 +17,12 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool _showThemeSelector = false;
   bool _showCharacterSelector = false;
-  late AnimationController _floatingExamplesController;
 
-  // Example prompts that will float across the screen
+  // Example prompts for suggestions
   final List<String> _examplePrompts = [
     "explain neural networks",
     "explain gravity",
@@ -40,16 +39,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _floatingExamplesController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 20),
-    )..repeat();
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _floatingExamplesController.dispose();
     super.dispose();
   }
 
@@ -84,20 +78,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               const SizedBox(height: 20),
 
               // SVG Cat Logo above the title (smaller without border)
-              SizedBox(
-                height: 120,
-                width: 120,
-                child: SvgPicture.asset(
-                  'assets/images/pencil_cat.svg',
-                  height: 120,
-                  width: 120,
-                  // Fallback to a custom drawn character if the asset isn't available
-                  placeholderBuilder: (context) => CustomPaint(
-                    size: const Size(120, 120),
-                    painter: CatPainter(),
-                  ),
-                ),
-              ),
+              // SizedBox(
+              //   height: 120,
+              //   width: 120,
+              //   child: SvgPicture.asset(
+              //     'assets/images/pencil_cat.svg',
+              //     height: 120,
+              //     width: 120,
+              //     // Fallback to a custom drawn character if the asset isn't available
+              //     placeholderBuilder: (context) => CustomPaint(
+              //       size: const Size(120, 120),
+              //       painter: CatPainter(),
+              //     ),
+              //   ),
+              // ),
 
               const SizedBox(height: 20),
 
@@ -161,25 +155,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
               const SizedBox(height: 25),
 
-              // Floating example prompts
-              SizedBox(
-                height: 80,
-                child: Stack(
-                  children: List.generate(_examplePrompts.length, (index) {
-                    // Create staggered animations
-                    final start = index / _examplePrompts.length;
-                    final end = start +
-                        0.8; // Extend a bit beyond 1.0 for smooth looping
-
-                    return FloatingExample(
-                      text: _examplePrompts[index],
-                      controller: _floatingExamplesController,
-                      start: start,
-                      end: end,
-                      verticalPosition: 10.0 + (index % 3) * 20.0,
-                      onTap: () => _handleSearch(_examplePrompts[index]),
-                    );
-                  }),
+              // Example suggestions (static, under search bar)
+              Container(
+                width: 600,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  spacing: 10,
+                  runSpacing: 10,
+                  children: _examplePrompts
+                      .map((prompt) => FloatingExample(
+                            text: prompt,
+                            onTap: () => _handleSearch(prompt),
+                          ))
+                      .toList(),
                 ),
               ),
 

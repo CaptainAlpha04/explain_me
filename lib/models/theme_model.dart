@@ -18,36 +18,41 @@ class Character {
 final List<ArtTheme> artThemes = [
   ArtTheme(
       name: 'Pencil Drawn',
-      description: 'Hand-drawn sketches with a pencil style'),
+      description:
+          'Hand-drawn sketches with a pencil style, black pen on white background'),
   ArtTheme(
-      name: 'Comic', description: 'Colorful comic book style illustrations'),
+      name: 'Comic',
+      description:
+          'Colorful comic book style illustrations with bold lines, punchy colors, and dynamic poses'),
   ArtTheme(
       name: 'Anime',
-      description: 'Japanese anime style with vibrant characters'),
+      description:
+          'Modern Anime style with vibrant characters, colorful and dynamic'),
   ArtTheme(
       name: 'Watercolor',
-      description: 'Soft watercolor illustrations with artistic flair'),
+      description:
+          'Soft watercolor illustrations with artistic flairs and textures, blending colors'),
 ];
 
 // List of available characters
 final List<Character> characters = [
   Character(
-    name: 'Snuggly Cat',
-    description: 'A cute, cuddly cat that loves to explain things',
+    name: 'Tiny Cat',
+    description: 'A tiny cute, cuddly cat',
     imagePath: 'assets/images/snuggly_cat.png',
   ),
   Character(
-    name: 'Robot',
-    description: 'A friendly robot with knowledge of all subjects',
+    name: 'Curious Robot',
+    description: 'A friendly robot with wheels',
     imagePath: 'assets/images/robot.png',
   ),
   Character(
-    name: 'Puppy',
-    description: 'An enthusiastic puppy that makes learning fun',
+    name: 'Dancing puppy',
+    description: 'An enthusiastic puppy',
     imagePath: 'assets/images/puppy.png',
   ),
   Character(
-    name: 'Tom with Noogler Hat',
+    name: 'Tom Noogler',
     description: 'A curious character wearing the iconic Noogler hat',
     imagePath: 'assets/images/tom_noogler.png',
   ),
